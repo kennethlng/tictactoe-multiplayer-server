@@ -87,59 +87,57 @@ exports.OnQueueCreated = functions.firestore
 
             return batch.commit(); 
         })
-        // .then(() => {
-        //     //  Search for the 2 last created queues from all players
-        //     const collectionRef = db.collection(constants.QUEUES);
-        //     return collectionRef.where(constants.IS_ACTIVE, "==", true).orderBy(constants.CREATED_ON).limit(2).get()
-        // })
-        // .then(queuesQuerySnapshot => {
-        //     //  If there's less than 2 total queues available, don't create a match. A match can't be started without at most 2 players. 
-        //     if (queuesQuerySnapshot.size < 2) {
-        //         return null;
-        //     }
+        .then(() => {
+            //  Search for the 2 last created queues from all players
+            const collectionRef = db.collection(constants.QUEUES);
+            return collectionRef.where(constants.IS_ACTIVE, "==", true).orderBy(constants.CREATED_ON).limit(2).get()
+        })
+        .then(queuesQuerySnapshot => {
+            //  If there's less than 2 total queues available, don't create a match. A match can't be started without at most 2 players. 
+            if (queuesQuerySnapshot.size < 2) {
+                return null;
+            }
 
-        //     var playerIds = []; 
+            var playerIds = []; 
 
-        //     //  Perform a batch write. 
-        //     const batch = db.batch(); 
+            //  Perform a batch write. 
+            const batch = db.batch(); 
 
-        //     queuesQuerySnapshot.forEach(function(doc) {
-        //         //  Grab the userId for each player
-        //         const data = doc.data(); 
-        //         playerIds.push(data[constants.USER_ID])
+            queuesQuerySnapshot.forEach(function(doc) {
+                //  Grab the userId for each player
+                const data = doc.data(); 
+                playerIds.push(data[constants.USER_ID])
 
-        //         //  Deactivate the queues so that they no longer pop in matchmaking requests. They can also be deleted if you want. 
-        //         const queueRef = doc.ref; 
-        //         batch.update(queueRef, { [constants.IS_ACTIVE]: false })
-        //     })
+                //  Deactivate the queues so that they no longer pop in matchmaking requests. They can also be deleted if you want. 
+                const queueRef = doc.ref; 
+                batch.update(queueRef, { [constants.IS_ACTIVE]: false })
+            })
 
-        //     //  Choose a random player to start first
-        //     const randomPlayerId = playerIds[Math.floor(Math.random() * playerIds.length)];
+            //  Choose a random player to start first
+            const randomPlayerId = playerIds[Math.floor(Math.random() * playerIds.length)];
             
-        //     //  Create a new match between the 2 players
-        //     const newMatchRef = db.collection(constants.MATCHES).doc(); 
-        //     batch.set(newMatchRef, {
-        //         [constants.IS_ACTIVE]: true,
-        //         [constants.WINNER]: "",
-        //         [constants.TURN]: randomPlayerId,
-        //         [constants.PLAYERS]: {
-        //             [playerIds[0]]: true,
-        //             [playerIds[1]]: true
-        //         },
-        //         [constants.PLAYER_O]: playerIds[0],
-        //         [constants.PLAYER_X]: playerIds[1],
-        //         "mark0": "",
-        //         "mark1": "",
-        //         "mark2": "",
-        //         "mark3": "",
-        //         "mark4": "",
-        //         "mark5": "",
-        //         "mark6": "",
-        //         "mark7": "",
-        //         "mark8": ""
-        //     })
+            //  Create a new match between the 2 players
+            const newMatchRef = db.collection(constants.MATCHES).doc(); 
+            batch.set(newMatchRef, {
+                [constants.IS_ACTIVE]: true,
+                [constants.WINNER]: "",
+                [constants.TURN]: randomPlayerId,
+                [playerIds[0]]: true,
+                [playerIds[1]]: true,
+                [constants.PLAYER_O]: playerIds[0],
+                [constants.PLAYER_X]: playerIds[1],
+                "mark0": "",
+                "mark1": "",
+                "mark2": "",
+                "mark3": "",
+                "mark4": "",
+                "mark5": "",
+                "mark6": "",
+                "mark7": "",
+                "mark8": ""
+            })
 
-        //     return batch.commit(); 
-        // })
-        // .catch(error => console.log(error)); 
+            return batch.commit(); 
+        })
+        .catch(error => console.log(error)); 
     })
