@@ -1,6 +1,6 @@
 # tictactoe-multiplayer-cloud-functions
 
-This is a Firebase Cloud Functions server that handles the backend logic for the [multiplayer TicTacToe game](https://github.com/kennethlng/tictactoe-multiplayer). There are 2 Firestore trigger functions: `onQueueCreated` and `onMatchUpdated`.  
+This is a Cloud Functions backend that handles the backend game logic for the [multiplayer TicTacToe game](https://github.com/kennethlng/tictactoe-multiplayer). There are 2 Firestore trigger functions: `onQueueCreated` and `onMatchUpdated`.  
  
 ### `onQueueCreated`
 
