@@ -13,3 +13,7 @@ While in the lobby, players can submit matchmaking requests. Each matchmaking re
 ## `onMatchUpdated`
 
 Each time a match is updated with new marks, the `onMatchUpdated` trigger function runs the backend game logic to determine whose turn it is next and whether a winner has been identified.
+
+## Contact
+
+If you have any questions or concerns, message me on [Twitter](https://twitter.com/kennethlng) or email me at hello@kennethlng.com.
