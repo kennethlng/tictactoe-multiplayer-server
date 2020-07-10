@@ -8,7 +8,7 @@ While in the lobby, players can submit matchmaking requests. Each matchmaking re
 
 1. Clean out previous matchmaking requests from the same player by deactivating them (`isActive` = `false`). 
 2. Search for active matchmaking requests from all players. For simplicity's sake, I only looked for the 2 most recent queues to create a match. In a real-life game example, you would probably create more complex logic to match players based on level, region, etc. 
-3. Once two queues have been identified, create a `match` between the two players. 
+3. If two queues have been found, create a new `match` document between the two players. 
 
 ### `onMatchUpdated`
 
